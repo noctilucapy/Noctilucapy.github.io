@@ -1,0 +1,53 @@
+/* skills */
+.page-title{padding:22px 2px 6px}
+.page-title h1{font:italic 400 clamp(36px,11vw,46px)/1.05 var(--serif);margin-top:8px}
+.page-title p{margin-top:8px;font-size:15px;line-height:1.5;color:var(--fog);max-width:40ch}
+.track{margin-top:26px}
+.track>header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.track h2{font:italic 400 26px var(--serif)}
+.concept{border-bottom:1px solid var(--line)}
+.concept:last-child{border-bottom:0}
+.concept>button{display:flex;align-items:center;gap:12px;width:100%;padding:14px;text-align:left}
+.concept.locked>button{opacity:.55}
+.c-main{flex:1;min-width:0}
+.c-main b{display:block;font-weight:500;font-size:15.5px}
+.c-main .meter{margin-top:9px}
+.c-tag{flex:none;font:500 9.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.c-tag.due{color:var(--void);background:var(--bone);padding:3px 6px;border-radius:5px}
+.c-open{padding:0 14px 16px;display:grid;gap:10px;font-size:14px;line-height:1.5;color:var(--fog)}
+.c-open .facts{display:flex;flex-wrap:wrap;gap:6px 14px;font:500 11px var(--mono);color:var(--dim)}
+.c-open .habit{padding:10px 12px;border-radius:10px;background:var(--deep);border:1px solid var(--line);color:var(--bright)}
+
+/* record */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.stat{padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--charcoal)}
+.stat small{display:block;font:500 9.5px var(--mono);letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.stat b{display:block;margin-top:8px;font:italic 400 32px/1 var(--serif)}
+.spark{display:block;width:100%;height:120px}
+.spark .grid{stroke:var(--line);stroke-width:1}.spark .path{fill:none;stroke:var(--bone);stroke-width:1.6;stroke-linejoin:round}.spark .area{fill:rgba(230,227,218,.06)}
+.history li{display:flex;align-items:center;gap:12px;padding:11px 14px;font-size:14px}
+.history li+li{border-top:1px solid var(--line)}
+.history .h-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.history small{font:500 11px var(--mono);color:var(--dim)}
+.dotscore{flex:none;width:8px;height:8px;border-radius:50%;background:var(--ash)}.dotscore.ok{background:var(--ok)}.dotscore.mid{background:var(--warn)}.dotscore.no{background:var(--bad)}
+.setting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;min-height:56px}
+.setting+.setting{border-top:1px solid var(--line)}
+.setting b{font-weight:500;font-size:15px}.setting small{display:block;color:var(--dim);font-size:12.5px;margin-top:2px}
+.switch{flex:none;width:46px;height:28px;border-radius:99px;border:1px solid var(--line-strong);position:relative;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--fog);transition:transform .2s,background .2s}
+.switch[aria-checked=true]{background:var(--bone);border-color:var(--bone)}.switch[aria-checked=true]::after{transform:translateX(18px);background:var(--void)}
+.seg{display:flex;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden}
+.seg button{padding:8px 14px;font:500 12px var(--mono);color:var(--fog)}.seg button[aria-pressed=true]{background:var(--bone);color:var(--void)}
+.backup{display:grid;gap:10px;padding:14px}
+.backup textarea{width:100%;min-height:90px;padding:10px;border-radius:10px;border:1px solid var(--line-strong);background:var(--void);color:var(--bone);font:13px/1.4 var(--mono);resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+
+/* done */
+.done-wrap{padding-top:28px}
+.done-wrap h1{font:italic 400 clamp(44px,14vw,60px)/1 var(--serif);margin:10px 0 12px}
+.arc li{display:flex;align-items:center;gap:12px;padding:13px 14px}
+.arc li+li{border-top:1px solid var(--line)}
+.arc .slotname{flex:none;width:62px;font:500 10px var(--mono);letter-spacing:.12em;color:var(--dim);text-transform:uppercase}
+.arc .name{flex:1;min-width:0;font-size:15px}.arc .name small{display:block;color:var(--dim);font-size:12.5px}
+.arc .xp{font:500 12px var(--mono);color:var(--fog)}
+.loading-screen{display:grid;place-items:center;min-height:50dvh}

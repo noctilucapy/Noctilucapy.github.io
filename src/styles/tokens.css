@@ -1,0 +1,39 @@
+/* Abyssal Liturgy tokens. One file, shared by every route.
+   Near monochrome. Bone is the only true highlight. Three muted signal tints exist for pass, caution and fail, and nothing else. */
+:root {
+  --void: #08090b;
+  --charcoal: #0d1013;
+  --deep: #12161a;
+  --bone: #e6e3da;
+  --fog: #9aa3a8;
+  --ash: #565f64;
+  --silver: #7c8891;
+  --bright: #c9cfd2;
+  /* Ash on void is only 3:1. Text that must be read uses --dim, which clears 4.5:1. */
+  --dim: #818c92;
+  --line: rgba(230, 227, 218, 0.08);
+  --line-strong: rgba(230, 227, 218, 0.17);
+  --ok: #9ab8a4;
+  --warn: #c9b48c;
+  --bad: #c08379;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --vv-h: 100dvh;
+  --vv-top: 0px;
+  --bar: 52px;
+  --tabs: 62px;
+  --r: 14px;
+  font-family: var(--sans);
+  color: var(--bone);
+  background: var(--void);
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
