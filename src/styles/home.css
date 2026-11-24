@@ -40,7 +40,7 @@
 .tracks{display:grid;gap:14px;padding:14px}
 .track-row{display:grid;grid-template-columns:104px 1fr 38px;align-items:center;gap:12px;font:500 12px var(--mono);color:var(--fog)}
 .track-row span:last-child{text-align:right;color:var(--dim)}
-.start-card{padding:24px 6px 0}
+.start-card{padding:calc(var(--safe-t) + var(--lift) + 24px) 6px 0}
 .start-card h1{font:italic 400 clamp(40px,12vw,52px)/1.02 var(--serif);margin:10px 0 14px}
 .start-card p{font-size:16px;line-height:1.55;color:var(--fog);max-width:34ch}
 .choice{display:block;width:100%;text-align:left;padding:16px;margin-top:12px;border:1px solid var(--line-strong);border-radius:14px;background:var(--charcoal)}
