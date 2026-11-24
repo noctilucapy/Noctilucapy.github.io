@@ -28,6 +28,7 @@
   --lift: 0px;
   --bar: 52px;
   --tabs: 62px;
+  --top: calc(var(--bar) + var(--safe-t) + var(--lift));
   --r: 14px;
   font-family: var(--sans);
   color: var(--bone);

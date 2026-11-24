@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, ChevronLeft, ChevronRight, Code2, Keyboard, Play, Square, Terminal, Trash2, Undo2 } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronRight, Code2, Keyboard, Play, Square, Terminal, Trash2, Undo2 } from 'lucide-react';
 import { Accessory, keepFocus } from '../components/Accessory';
 import { CodeEditor, type EditorHandle } from '../components/CodeEditor';
 import { Sheet } from '../components/Sheet';
@@ -12,7 +12,7 @@ type Run = { state: 'idle' | 'running' | 'done' | 'error' | 'stopped'; output: s
 type Undo = { code: string; stdin: string; label: string };
 
 /** A free scratchpad: write any Python, optionally feed input() lines, run it, see the console. Nothing here affects progress. */
-export function TerminalScreen({ onBack, fontSize }: { onBack: () => void; fontSize: number }) {
+export function TerminalScreen({ fontSize }: { fontSize: number }) {
   const saved = useMemo(loadSandbox, []);
   const [code, setCode] = useState(saved.code);
   const [stdin, setStdin] = useState(saved.stdin);
@@ -78,12 +78,6 @@ export function TerminalScreen({ onBack, fontSize }: { onBack: () => void; fontS
       <div className="focus-bar">
         <button className="done" onClick={() => editor.current?.blur()}><ChevronDown size={18} /> Done</button>
         <span className="focus-title"><Terminal size={14} /> Terminal</span>
-      </div>
-
-      <div className="play-bar">
-        <button className="back" onClick={onBack}><ChevronLeft size={18} /> HOME</button>
-        <div className="eyebrow">SANDBOX</div>
-        <div style={{ width: 60 }} aria-hidden="true" />
       </div>
 
       <div className="head sandbox-head">

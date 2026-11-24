@@ -15,8 +15,8 @@ const glyph = (cx, cy, s) => `
   <g transform="translate(${cx} ${cy}) scale(${s})">
     <ellipse rx="330" ry="196" transform="rotate(-24)" fill="none" stroke="${SILVER}" stroke-width="9"/>
     <circle r="132" fill="${BONE}"/>
-    <circle cx="262" cy="-160" r="26" fill="${BRIGHT}"/>
-    <circle cx="-262" cy="150" r="18" fill="${SILVER}"/>
+    <circle cx="274.14" cy="-172.69" r="26" fill="${BRIGHT}"/>
+    <circle cx="-280.1" cy="166.6" r="18" fill="${SILVER}"/>
   </g>`;
 
 const iconSvg = ({ glyphScale = 1, rounded = false } = {}) => `<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">

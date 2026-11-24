@@ -98,10 +98,10 @@ export default function App() {
     return <main className="shell" data-view="start"><Onboarding onChoose={(c) => setSave((s) => chooseStart(s, c))} /></main>;
   }
 
-  const tab: TabId | null = route === 'home' ? 'home' : route === 'skills' ? 'skills' : route === 'record' ? 'record' : null;
+  const tab: TabId | null = route === 'home' ? 'home' : route === 'skills' ? 'skills' : route === 'record' ? 'record' : route === 'terminal' ? 'terminal' : null;
   return (
     <main className="shell" data-view={route}>
-      {tab && (
+      {(tab || route === 'done') && (
         <header className="topbar">
           <a className="brand" href="#/" style={{ textDecoration: 'none' }}><LogoMark size={28} /><span>NOCTILUCA</span></a>
           <div className="chips">
@@ -113,7 +113,7 @@ export default function App() {
       {route === 'home' && <HomeScreen save={save} concepts={catalog.concepts} preview={preview} recs={recs} onStart={begin} />}
       {route === 'skills' && <SkillsScreen save={save} cat={catalog} onPractice={begin} />}
       {route === 'record' && <RecordScreen save={save} onSettings={patchSettings} onImport={(s) => setSave(s)} onReset={() => { setSave({ ...freshSave(), start: null }); setActive(null); go('#/'); }} />}
-      {route === 'terminal' && <TerminalScreen onBack={() => go('#/')} fontSize={save.settings.fontSize} />}
+      {route === 'terminal' && <TerminalScreen fontSize={save.settings.fontSize} />}
       {route === 'play' && active && <PlayScreen key={active.pick.ch.id} pick={active.pick} save={save} report={active.report} nextSlot={active.nextSlot} onResult={onResult} onNext={onNext} onSwap={onSwap} onBack={() => go('#/')} />}
       {route === 'done' && (save.session?.done ? <DoneScreen save={save} onAgain={() => begin(null)} onHome={() => go('#/')} /> : <p className="muted" style={{ padding: 40 }}>No finished descent yet.</p>)}
       {tab && <TabBar active={tab} dueCount={dueCount} />}
