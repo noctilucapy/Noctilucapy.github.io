@@ -25,6 +25,7 @@
   --safe-r: env(safe-area-inset-right, 0px);
   --vv-h: 100dvh;
   --vv-top: 0px;
+  --lift: 0px;
   --bar: 52px;
   --tabs: 62px;
   --r: 14px;
@@ -36,4 +37,9 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Installed on the Home Screen the status bar is translucent: push the whole header down for a clean, solid cushion. */
+@media (display-mode: standalone) {
+  :root { --lift: 44px; }
 }
