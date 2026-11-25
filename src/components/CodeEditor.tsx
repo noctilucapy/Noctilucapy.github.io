@@ -50,7 +50,7 @@ const COMMANDS = {
 } as const;
 export type EditorCommand = keyof typeof COMMANDS | 'tab';
 
-export type EditorHandle = { insert: (text: string) => void; snippet: (text: string) => void; command: (name: EditorCommand) => void; blur: () => void };
+export type EditorHandle = { insert: (text: string) => void; snippet: (text: string) => void; command: (name: EditorCommand) => void; blur: () => void; focus: () => void };
 
 /** CodeMirror configured for phones: no autocapitalise / autocorrect / smart quotes, 4-space indent, brand theme. */
 export const CodeEditor = forwardRef<EditorHandle, { value: string; onChange: (v: string) => void; onRun?: () => void; readOnly?: boolean; fontSize?: number }>(function CodeEditor({ value, onChange, onRun, readOnly, fontSize }, ref) {
@@ -93,12 +93,14 @@ export const CodeEditor = forwardRef<EditorHandle, { value: string; onChange: (v
       if (name !== 'find') v.focus();
     },
     blur() { view.current?.contentDOM.blur(); },
+    /** Focus without letting the browser scroll the page. Call it inside a tap handler so iOS raises the keyboard. */
+    focus() { view.current?.contentDOM.focus({ preventScroll: true }); },
   }), []);
 
   return (
     <CodeMirror
       value={value}
-      minHeight="168px"
+      minHeight="200px"
       maxHeight="340px"
       onChange={onChange}
       onCreateEditor={(v) => { view.current = v; }}

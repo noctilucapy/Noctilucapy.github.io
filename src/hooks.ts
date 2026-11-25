@@ -20,8 +20,11 @@ export function useViewportMode() {
     const vars = () => {
       root.style.setProperty('--vv-h', `${Math.round(vv ? vv.height : window.innerHeight)}px`);
       root.style.setProperty('--vv-top', `${Math.round(vv ? vv.offsetTop : 0)}px`);
+      // The on-screen keyboard is up when the visible area is much shorter than the layout viewport.
+      root.classList.toggle('kb', !!vv && window.innerHeight - vv.height > 120);
     };
-    const inEditor = () => !!document.activeElement?.closest('.cm-editor');
+    // Challenge screens run their own explicit full-screen editor (see Play.tsx); only the Terminal uses focus mode.
+    const inEditor = () => { const a = document.activeElement; return !!a?.closest('.cm-editor') && !a.closest('.challenge'); };
     const apply = () => {
       const on = phone.matches && inEditor();
       if (on === editing) return;
@@ -39,7 +42,7 @@ export function useViewportMode() {
       window.removeEventListener('pointerdown', remember, { capture: true } as EventListenerOptions);
       document.removeEventListener('focusin', soon); document.removeEventListener('focusout', soon);
       window.removeEventListener('hashchange', soon); window.removeEventListener('popstate', soon);
-      root.classList.remove('editing'); setEditing(false);
+      root.classList.remove('editing', 'kb'); setEditing(false);
     };
   }, []);
 }
