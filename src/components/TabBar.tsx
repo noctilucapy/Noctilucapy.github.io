@@ -1,7 +1,7 @@
-import { Icon } from './Icon';
+import { Icon, type IconName } from './Icon';
 
 export type TabId = 'home' | 'skills' | 'terminal' | 'record';
-const TABS: Array<{ id: TabId; label: string; icon: string; href: string }> = [
+const TABS: Array<{ id: TabId; label: string; icon: IconName; href: string }> = [
   { id: 'home', label: 'Descent', icon: 'home', href: '#/' },
   { id: 'skills', label: 'Skills', icon: 'skills', href: '#/skills' },
   { id: 'terminal', label: 'Terminal', icon: 'terminal', href: '#/terminal' },

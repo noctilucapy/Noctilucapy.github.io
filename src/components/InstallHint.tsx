@@ -1,4 +1,4 @@
-import { ChevronRight, Share, SquarePlus, X } from 'lucide-react';
+import { Icon } from './Icon';
 import type { InstallHint as Hint } from '../hooks';
 
 export function InstallHint({ hint }: { hint: NonNullable<Hint> }) {
@@ -8,11 +8,11 @@ export function InstallHint({ hint }: { hint: NonNullable<Hint> }) {
       <div className="install-copy">
         <b>Keep Noctiluca on your Home Screen</b>
         {hint.kind === 'ios'
-          ? <span>Tap <Share size={14} aria-label="Share" /> then <em><SquarePlus size={14} aria-hidden="true" /> Add to Home Screen</em></span>
+          ? <span>Tap <Icon name="share" size={14} label="Share" /> then <em><Icon name="square-plus" size={14} /> Add to Home Screen</em></span>
           : <span>Install it for full-screen practice, even offline.</span>}
       </div>
-      {hint.kind === 'prompt' && hint.install && <button className="install-go" onClick={hint.install} aria-label="Install app"><ChevronRight size={18} /></button>}
-      <button className="install-x" onClick={hint.dismiss} aria-label="Dismiss"><X size={16} /></button>
+      {hint.kind === 'prompt' && hint.install && <button className="install-go" onClick={hint.install} aria-label="Install app"><Icon name="chevron" size={18} /></button>}
+      <button className="install-x" onClick={hint.dismiss} aria-label="Dismiss"><Icon name="x" size={16} /></button>
     </aside>
   );
 }
