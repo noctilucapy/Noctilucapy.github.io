@@ -5,6 +5,7 @@ import { rankOf } from '../engine/rating';
 import { exportSave, importSave } from '../engine/store';
 import type { Save, Settings } from '../engine/types';
 import { levelOf } from '../engine/xp';
+import { setHaptics, tap } from '../haptics';
 
 function Spark({ values }: { values: number[] }) {
   if (values.length < 2) return <p className="muted" style={{ padding: 14, fontSize: 14 }}>Solve a few challenges to see your depth over time.</p>;
@@ -66,10 +67,10 @@ export function RecordScreen({ save, onSettings, onImport, onReset }: Props) {
 
       <section className="section"><div className="eyebrow">Settings</div>
         <div className="card">
-          <div className="setting"><div><b>Key haptics</b><small>A light tick on toolbar keys, where the device allows it.</small></div>
-            <button className="switch" role="switch" aria-checked={save.settings.haptics} aria-label="Key haptics" onClick={() => onSettings({ haptics: !save.settings.haptics })} /></div>
-          <div className="setting"><div><b>Editor text size</b><small>16 is the smallest that stops iOS zooming in.</small></div>
-            <div className="seg">{([16, 17, 18] as const).map((n) => <button key={n} aria-pressed={save.settings.fontSize === n} onClick={() => onSettings({ fontSize: n })}>{n}</button>)}</div></div>
+          <div className="setting"><div><b>Haptics</b><small>A short tick on taps and results</small></div>
+            <button className="switch" role="switch" aria-checked={save.settings.haptics} aria-label="Haptics" onClick={() => { if (!save.settings.haptics) { setHaptics(true); tap(); } onSettings({ haptics: !save.settings.haptics }); }} /></div>
+          <div className="setting"><div><b>Editor text size</b><small>For code and pages</small></div>
+            <div className="seg">{([['S', 16], ['M', 17], ['L', 18]] as const).map(([l, n]) => <button key={l} aria-pressed={save.settings.fontSize === n} aria-label={`${l === 'S' ? 'Small' : l === 'M' ? 'Medium' : 'Large'}, ${n} pixels`} onClick={() => { tap(); onSettings({ fontSize: n }); }}>{l}</button>)}</div></div>
         </div>
       </section>
 

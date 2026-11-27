@@ -19,7 +19,7 @@ export function freshSave(now = Date.now()): Save {
     v: 2, salt: hash32(String(now) + Math.random()), created: now, start: null, xp: 0,
     g: freshSkill(600), skills: {}, mastery: {}, flow: freshFlow(), seenAt: {}, sigs: [], recent: [], issued: 0, session: null,
     streak: { days: 0, last: '', shield: 0 }, history: [], goals: { day, list: dailyGoals(day) },
-    stats: { solved: 0, clean: 0, hints: 0, secs: 0, sessions: 0, bestStreak: 0 }, settings: { haptics: true, fontSize: 16 },
+    stats: { solved: 0, clean: 0, hints: 0, secs: 0, sessions: 0, bestStreak: 0 }, settings: { haptics: true, fontSize: 17 },
   };
 }
 
