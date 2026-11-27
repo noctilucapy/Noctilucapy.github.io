@@ -3,7 +3,7 @@ import CodeMirror from '@uiw/react-codemirror';
 import { python } from '@codemirror/lang-python';
 import { indentUnit, syntaxHighlighting, HighlightStyle } from '@codemirror/language';
 import { EditorView, keymap } from '@codemirror/view';
-import { Prec } from '@codemirror/state';
+import { EditorSelection, Prec } from '@codemirror/state';
 import { copyLineDown, cursorCharLeft, cursorCharRight, cursorGroupLeft, cursorGroupRight, cursorLineDown, cursorLineUp, cursorLineBoundaryBackward, cursorLineBoundaryForward, deleteLine, indentLess, indentMore, insertBlankLine, moveLineDown, moveLineUp, redo, selectLine, toggleComment, undo } from '@codemirror/commands';
 import { openSearchPanel, search } from '@codemirror/search';
 import { EditorState } from '@codemirror/state';
@@ -31,6 +31,18 @@ const ink = syntaxHighlighting(HighlightStyle.define([
 ]));
 
 export { night, ink };
+
+/** Put the caret at the very end of the document, i.e. on the line after a starter comment. */
+const toEnd = (v: EditorView) => v.dispatch({ selection: EditorSelection.cursor(v.state.doc.length) });
+
+/** When the whole document is swapped from outside (Reset, a new challenge), park the caret at the end again.
+ *  Typing, snippets, undo and redo all carry a userEvent, so they never trigger this. */
+const caretAtEndOnReplace = EditorView.updateListener.of((u) => {
+  if (!u.docChanged || u.transactions.some((tr) => tr.isUserEvent('input') || tr.isUserEvent('delete') || tr.isUserEvent('undo') || tr.isUserEvent('redo') || tr.isUserEvent('move'))) return;
+  let whole = false;
+  u.changes.iterChangedRanges((fromA, toA) => { if (fromA === 0 && toA === u.startState.doc.length) whole = true; });
+  if (whole) requestAnimationFrame(() => toEnd(u.view));
+});
 
 const PAIRS: Record<string, string> = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
 const CLOSERS = [')', ']', '}'];
@@ -103,10 +115,10 @@ export const CodeEditor = forwardRef<EditorHandle, { value: string; onChange: (v
       minHeight="200px"
       maxHeight="340px"
       onChange={onChange}
-      onCreateEditor={(v) => { view.current = v; }}
+      onCreateEditor={(v) => { view.current = v; toEnd(v); }}
       theme="none"
       extensions={[
-        python(), night, ink, indentUnit.of('    '), search({ top: true }),
+        python(), night, ink, caretAtEndOnReplace, indentUnit.of('    '), search({ top: true }),
         ...(onRun ? [Prec.highest(keymap.of([{ key: 'Shift-Enter', run: () => { onRun(); return true; } }]))] : []),
         EditorView.editable.of(!readOnly),
         EditorView.theme({ '.cm-content, .cm-line': { fontSize: `${fontSize ?? 16}px` } }),
