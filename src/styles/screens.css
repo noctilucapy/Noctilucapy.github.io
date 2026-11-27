@@ -1,10 +1,12 @@
 /* skills */
-.page-title{padding:22px 2px 6px}
+.page-title{padding:28px 2px 6px}
 .page-title h1{font:italic 400 clamp(36px,11vw,46px)/1.05 var(--serif);margin-top:8px}
 .page-title p{margin-top:8px;font-size:15px;line-height:1.5;color:var(--fog);max-width:40ch}
-.track{margin-top:26px}
-.track>header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.track h2{font:italic 400 26px var(--serif)}
+.track{margin-top:32px}
+/* Title above its blurb, never beside it: a long blurb used to wrap under the heading and collide with it. */
+.track>header{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:14px;padding:0 2px}
+.track h2{font:italic 400 28px/1.1 var(--serif)}
+.track>header .eyebrow{display:block;max-width:34ch;line-height:1.7;letter-spacing:.14em;text-wrap:balance}
 .concept{border-bottom:1px solid var(--line)}
 .concept:last-child{border-bottom:0}
 .concept>button{display:flex;align-items:center;gap:12px;width:100%;padding:14px;text-align:left}
@@ -44,6 +46,9 @@
 
 /* done */
 .done-wrap{padding-top:28px}
+.done-wrap .actions{align-items:stretch}
+.done-wrap .actions .btn.ghost{flex:0 0 auto;min-width:96px}
+.done-wrap .actions .btn.primary{flex:1 1 auto}
 .done-wrap h1{font:italic 400 clamp(44px,14vw,60px)/1 var(--serif);margin:10px 0 12px}
 .arc li{display:flex;align-items:center;gap:12px;padding:13px 14px}
 .arc li+li{border-top:1px solid var(--line)}
