@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, ChevronUp, Lightbulb, Maximize2, X } from 'lucide-react';
 import { Accessory, keepFocus } from '../components/Accessory';
 import { CodeEditor, type EditorHandle } from '../components/CodeEditor';
 import { CodeView } from '../components/CodeView';
@@ -136,7 +135,7 @@ export function PlayScreen({ pick, save, report, nextSlot, onResult, onNext, onS
   const summary = state.kind === 'busy' ? state.text
     : state.kind === 'error' ? lastLine(state.text)
       : solvedNow ? 'All tests pass'
-        : gr && ch.cases ? (firstBad >= 0 ? `${gr.cases[firstBad].call}  →  got ${gr.cases[firstBad].got}` : `${gr.passed} of ${gr.total} pass`)
+        : gr && ch.cases ? (firstBad >= 0 ? <>{gr.cases[firstBad].call} <Icon name="arrow" size={13} className="inline-ico" /> got {gr.cases[firstBad].got}</> : `${gr.passed} of ${gr.total} pass`)
           : gr ? (lastLine(gr.prints || 'Program finished with no output.'))
             : ch.cases ? 'Run to check against hidden cases' : 'Run to see your output';
 
@@ -156,7 +155,7 @@ export function PlayScreen({ pick, save, report, nextSlot, onResult, onNext, onS
           </div>
           {!gr.solved && firstBad >= 0 && (
             <div className="cases">
-              <div className="case no"><b>×</b><code>{gr.cases[firstBad].call}</code></div>
+              <div className="case no"><b><Icon name="x" size={13} stroke={2} /></b><code>{gr.cases[firstBad].call}</code></div>
               <div className="case-detail">expected <i>{gr.cases[firstBad].want}</i><br />got <i>{gr.cases[firstBad].got}</i></div>
             </div>
           )}
@@ -215,16 +214,16 @@ export function PlayScreen({ pick, save, report, nextSlot, onResult, onNext, onS
               {full && (
                 <div className="code-top">
                   <div className="code-bar">
-                    <button className="done" onClick={closeEditor}><ChevronDown size={18} /> Done</button>
+                    <button className="done" onClick={closeEditor}><Icon name="chevron-down" size={18} /> Done</button>
                     <span className="code-title"><b>{ch.title}</b></span>
-                    <button className={`code-chip${taskOpen ? ' on' : ''}`} onPointerDown={keepFocus} onClick={() => { setTaskOpen((o) => !o); setOutOpen(false); }} aria-expanded={taskOpen}><BookOpen size={16} /> Task</button>
-                    <button className={`code-chip${hints ? ' on' : ''}`} onPointerDown={keepFocus} onClick={() => { setTaskOpen((o) => !o); setOutOpen(false); }} aria-label={`Hints, ${hints} of ${ch.hints.length} used`}><Lightbulb size={16} /> {hints}/{ch.hints.length}</button>
+                    <button className={`code-chip${taskOpen ? ' on' : ''}`} onPointerDown={keepFocus} onClick={() => { setTaskOpen((o) => !o); setOutOpen(false); }} aria-expanded={taskOpen}><Icon name="book" size={16} /> Task</button>
+                    <button className={`code-chip${hints ? ' on' : ''}`} onPointerDown={keepFocus} onClick={() => { setTaskOpen((o) => !o); setOutOpen(false); }} aria-label={`Hints, ${hints} of ${ch.hints.length} used`}><Icon name="hint" size={16} /> {hints}/{ch.hints.length}</button>
                   </div>
                   {taskOpen && (
                     <>
                       <div className="scrim" onPointerDown={keepFocus} onClick={() => setTaskOpen(false)} />
                       <div className="panel task-panel" role="region" aria-label="Task and hints">
-                        <div className="panel-head"><span className="eyebrow">Task</span><button className="icon-btn" onPointerDown={keepFocus} onClick={() => setTaskOpen(false)} aria-label="Close task"><X size={18} /></button></div>
+                        <div className="panel-head"><span className="eyebrow">Task</span><button className="icon-btn" onPointerDown={keepFocus} onClick={() => setTaskOpen(false)} aria-label="Close task"><Icon name="x" size={18} /></button></div>
                         <p className="prompt">{ch.prompt}</p>
                         {examplesEl}
                         {hintsEl}
@@ -240,12 +239,12 @@ export function PlayScreen({ pick, save, report, nextSlot, onResult, onNext, onS
                   <span><Icon name="terminal" size={14} /> main.py</span>
                   <span className={`rt rt-${rt}`}>{rt === 'ready' ? 'PYTHON READY' : rt === 'loading' ? 'PYTHON WAKING' : 'PYTHON ASLEEP'}</span>
                   <span className="lines">{lines} {lines === 1 ? 'line' : 'lines'}</span>
-                  {phone && !finished && <button className="expand" onClick={openEditor} aria-label="Open full-screen editor"><Maximize2 size={14} /> Edit</button>}
+                  {phone && !finished && <button className="expand" onClick={openEditor} aria-label="Open full-screen editor"><Icon name="expand" size={14} /> Edit</button>}
                   <button className="icon-btn" onClick={() => setCode(ch.starter)} aria-label="Reset code" disabled={finished}><Icon name="reset" size={16} /></button>
                 </div>
                 <div className="editor">
                   <CodeEditor ref={editor} value={code} onChange={setCode} onRun={run} readOnly={finished} fontSize={save.settings.fontSize} />
-                  {phone && !full && !finished && <button className="editor-open" onClick={openEditor} aria-label="Open full-screen code editor"><span><Maximize2 size={14} /> Tap to write code</span></button>}
+                  {phone && !full && !finished && <button className="editor-open" onClick={openEditor} aria-label="Open full-screen code editor"><span><Icon name="expand" size={14} /> Tap to write code</span></button>}
                 </div>
               </div>
 
@@ -260,7 +259,7 @@ export function PlayScreen({ pick, save, report, nextSlot, onResult, onNext, onS
                   <button className="strip" onPointerDown={keepFocus} onClick={() => { setOutOpen((o) => !o); setTaskOpen(false); }} aria-expanded={outOpen}>
                     <span className={`status ${statusCls}`}>{status}</span>
                     <span className="strip-text">{summary}</span>
-                    {outOpen ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                    {outOpen ? <Icon name="chevron-down" size={16} /> : <Icon name="chevron-up" size={16} />}
                   </button>
                   <Accessory editor={editor} action={runKey} />
                 </div>
