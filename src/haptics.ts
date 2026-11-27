@@ -76,25 +76,59 @@ if (typeof document !== 'undefined' && hasVibrate) {
 
 const HOSTS = 'button, a[href]';
 const SKIP = '.pad, .cm-editor, [data-nohx]';
+/**
+ * A finger that lands on a native switch is owned by the switch, so it cannot start a scroll. Overlays therefore go
+ * only on controls that stay still: the top bars, tab bar, bottom dock and sheets. Answer options and skill cards sit
+ * in the scrolling page and keep a script tick instead (iOS 17.4 to 26.4).
+ */
+const PINNED = '.tabbar, .topbar, .play-bar, .dock, .sheet-wrap';
 export const isIOS = typeof navigator !== 'undefined' && (/iP(hone|od|ad)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
-/** iPhone only: overlay an invisible switch on every control so a real tap produces a Taptic tick. */
+function inScrollingArea(el: HTMLElement): boolean {
+  for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+    const oy = getComputedStyle(p).overflowY;
+    if ((oy === 'auto' || oy === 'scroll') && p.scrollHeight > p.clientHeight + 1) return true;
+  }
+  return false;
+}
+
+/** iPhone only: overlay an invisible switch on fixed controls so a real tap produces a Taptic tick. */
 export function mountIosHaptics() {
   if (typeof document === 'undefined' || !isIOS || hasVibrate) return;
+  // Controls without an overlay still get the script tick.
+  document.addEventListener('click', (e) => {
+    if (!enabled || Date.now() - lastTap < 80) return;
+    if ((e.target as Element | null)?.closest?.('button, a[href]')) tap();
+  });
   let queued = false;
   const decorate = () => {
     queued = false;
     document.querySelectorAll<HTMLElement>(HOSTS).forEach((host) => {
       if (host.querySelector(':scope > .hx') || host.closest(SKIP) || (host as HTMLButtonElement).disabled || host.getAttribute('aria-disabled') === 'true') return;
-      if (getComputedStyle(host).position === 'static') host.classList.add('hx-host');
+      if (!host.closest(PINNED) || inScrollingArea(host)) return;
+      // Inline style, not a class: React rewrites className on re-render and would drop a class,
+      // leaving the overlay stretched over its neighbours.
+      if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+      host.style.isolation = 'isolate';
       const sw = document.createElement('input');
       sw.type = 'checkbox'; sw.className = 'hx'; sw.tabIndex = -1;
       sw.setAttribute('switch', ''); sw.setAttribute('aria-hidden', 'true');
-      sw.addEventListener('click', (e) => {
-        e.preventDefault(); e.stopPropagation();
-        lastHx = Date.now();
+      let lastForward = 0;
+      const forward = () => {
+        const now = Date.now();
+        if (now - lastForward < 400) return;
+        lastForward = now;
+        lastHx = now;
         if (!(host as HTMLButtonElement).disabled) host.click();
+      };
+      let from: { x: number; y: number } | null = null;
+      sw.addEventListener('pointerdown', (e) => { from = { x: e.clientX, y: e.clientY }; });
+      sw.addEventListener('pointercancel', () => { from = null; });
+      sw.addEventListener('pointerup', (e) => {
+        const start = from; from = null;
+        if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) < 10) forward();
       });
+      sw.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); forward(); });
       host.append(sw);
     });
   };
