@@ -7,6 +7,7 @@ import '@fontsource/jost/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import App from './App';
+import { mountIosHaptics } from './haptics';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/home.css';
@@ -14,6 +15,8 @@ import './styles/play.css';
 import './styles/screens.css';
 
 createRoot(document.getElementById('root')!).render(<React.StrictMode><App /></React.StrictMode>);
+
+mountIosHaptics();
 
 // Offline support + instant updates (production only; the dev server must not be cached).
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
