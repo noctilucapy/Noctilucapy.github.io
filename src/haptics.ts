@@ -45,10 +45,23 @@ function iosTick() {
 }
 
 /** A short tick. `ms` doubles as strength: <=10 light, <=20 success (two ticks), above that error (three). */
+let lastTap = 0;
 export const tap = (ms = 6) => {
   if (!enabled) return;
+  lastTap = Date.now();
   if (hasVibrate) { try { navigator.vibrate(ms); } catch { /* unsupported */ } return; }
   iosTick();
   if (ms > 10) setTimeout(iosTick, 70);
   if (ms > 20) setTimeout(iosTick, 140);
 };
+
+/** Every tab, link and button gets a light tick, so screens do not each have to remember to call tap().
+ *  Runs after the element's own handler (bubble phase); if that handler already ticked, it stays quiet. */
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    const el = (e.target as Element | null)?.closest?.('a[href], button, [role="button"], [role="tab"], [role="switch"]');
+    if (!el || (el as HTMLButtonElement).disabled || el.closest('.key')) return;
+    if (Date.now() - lastTap < 80) return;
+    tap();
+  });
+}
