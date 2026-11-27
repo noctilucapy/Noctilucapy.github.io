@@ -11,6 +11,8 @@ export const setHaptics = (on: boolean) => { enabled = on; };
 
 let label: HTMLLabelElement | null = null;
 
+/** Builds the hidden switch once, early, so WebKit has laid it out long before the first tap.
+ *  It must be rendered, on screen and full size: off-screen, 1px or display:none variants are skipped by Safari. */
 function ensureSwitch(): HTMLLabelElement | null {
   if (typeof document === 'undefined' || !document.body) return null;
   if (label && label.isConnected) return label;
@@ -20,18 +22,20 @@ function ensureSwitch(): HTMLLabelElement | null {
   input.setAttribute('switch', '');
   input.id = id;
   input.tabIndex = -1;
-  input.setAttribute('aria-hidden', 'true');
+  input.style.cssText = 'margin:0;';
   const l = document.createElement('label');
   l.htmlFor = id;
   l.setAttribute('aria-hidden', 'true');
-  // Must stay rendered (not display:none) or WebKit skips the haptic. Invisible, inert, off to the side.
-  const css = 'position:fixed;left:-100px;top:0;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;';
-  input.style.cssText = css;
-  l.style.cssText = css;
+  l.style.cssText = 'position:fixed;left:0;bottom:0;opacity:0.01;pointer-events:none;z-index:-1;margin:0;padding:0;';
   l.appendChild(input);
   document.body.appendChild(l);
   label = l;
   return l;
+}
+
+if (typeof document !== 'undefined') {
+  const arm = () => { ensureSwitch(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arm, { once: true }); else arm();
 }
 
 const hasVibrate = typeof navigator !== 'undefined' && typeof navigator.vibrate === 'function';
