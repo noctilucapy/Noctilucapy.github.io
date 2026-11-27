@@ -40,7 +40,7 @@ pre.out.error,.err{color:var(--bad)}
 .cases{display:grid;gap:0}
 .case{display:flex;align-items:center;gap:10px;padding:9px 12px;font:12.5px var(--mono);color:var(--fog)}
 .case+.case{border-top:1px solid var(--line)}
-.case b{flex:none;width:16px;text-align:center}.case.ok b{color:var(--ok)}.case.no b{color:var(--bad)}
+.case b{flex:none;width:16px;height:16px;display:grid;place-items:center}.case.ok b{color:var(--ok)}.case.no b{color:var(--bad)}
 .case code{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--bone)}
 .case-detail{padding:2px 12px 12px 38px;font:12.5px/1.6 var(--mono);color:var(--fog);overflow-wrap:anywhere}
 .case-detail i{font-style:normal;color:var(--bone)}

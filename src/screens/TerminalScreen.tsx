@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { BookOpen, ChevronDown, ChevronRight, Code2, Keyboard, Play, Square, Terminal, Trash2, Undo2 } from 'lucide-react';
 import { Accessory, keepFocus } from '../components/Accessory';
+import { Icon } from '../components/Icon';
 import { CodeEditor, type EditorHandle } from '../components/CodeEditor';
 import { Sheet } from '../components/Sheet';
 import { EXAMPLES, type Example } from '../examples';
@@ -70,14 +70,14 @@ export function TerminalScreen({ fontSize }: { fontSize: number }) {
   const status = run.state === 'running' ? 'RUNNING' : run.state === 'done' ? `DONE · ${run.ms} MS` : run.state === 'error' ? 'ERROR' : run.state === 'stopped' ? 'STOPPED' : 'READY';
   const eof = !!run.error && /EOFError/.test(run.error);
   const runAction = running
-    ? <button className="run-mini danger" onPointerDown={keepFocus} onClick={stop}><Square size={14} fill="currentColor" /> Stop</button>
-    : <button className="run-mini" onPointerDown={keepFocus} onClick={start}><Play size={15} fill="currentColor" /> Run</button>;
+    ? <button className="run-mini danger" onPointerDown={keepFocus} onClick={stop}><Icon name="stop" size={14} solid /> Stop</button>
+    : <button className="run-mini" onPointerDown={keepFocus} onClick={start}><Icon name="play" size={15} solid /> Run</button>;
 
   return (
     <div className="workspace play terminal">
       <div className="focus-bar">
-        <button className="done" onClick={() => editor.current?.blur()}><ChevronDown size={18} /> Done</button>
-        <span className="focus-title"><Terminal size={14} /> Terminal</span>
+        <button className="done" onClick={() => editor.current?.blur()}><Icon name="chevron-down" size={18} /> Done</button>
+        <span className="focus-title"><Icon name="terminal" size={14} /> Terminal</span>
       </div>
 
       <div className="head sandbox-head">
@@ -88,19 +88,19 @@ export function TerminalScreen({ fontSize }: { fontSize: number }) {
 
       <div className="card editor-card">
         <div className="card-top">
-          <span><Code2 size={14} /> main.py</span>
+          <span><Icon name="code" size={14} /> main.py</span>
           <span className={`rt rt-${rt}`}>{rt === 'ready' ? 'PYTHON READY' : rt === 'loading' ? 'PYTHON WAKING' : 'PYTHON ASLEEP'}</span>
           <span className="lines">{lines} {lines === 1 ? 'line' : 'lines'}</span>
-          <button className="icon-btn" onClick={() => code && replace({ code: '', stdin }, 'Editor cleared')} aria-label="Clear editor" disabled={!code}><Trash2 size={16} /></button>
+          <button className="icon-btn" onClick={() => code && replace({ code: '', stdin }, 'Editor cleared')} aria-label="Clear editor" disabled={!code}><Icon name="trash" size={16} /></button>
         </div>
         <div className="editor"><CodeEditor ref={editor} value={code} onChange={setCode} onRun={start} fontSize={fontSize} /></div>
       </div>
 
       <div className="card input-card">
         <button className="card-top toggle" onClick={() => setInputOpen((o) => !o)} aria-expanded={inputVisible}>
-          <span><Keyboard size={14} /> INPUT</span>
+          <span><Icon name="keyboard" size={14} /> INPUT</span>
           <span className="hint-line">{needsInput && !stdin.trim() ? 'your code calls input()' : stdin.trim() ? `${stdin.replace(/\n$/, '').split('\n').length} line(s) ready` : 'optional'}</span>
-          <ChevronRight size={16} className={`chev${inputVisible ? ' open' : ''}`} />
+          <Icon name="chevron" size={16} className={`chev${inputVisible ? ' open' : ''}`} />
         </button>
         {inputVisible && (
           <textarea className="stdin" value={stdin} onChange={(e) => setStdin(e.target.value)} rows={3} placeholder={'One line per input() call, in order.\nExample:\nAda\n30'}
@@ -110,9 +110,9 @@ export function TerminalScreen({ fontSize }: { fontSize: number }) {
 
       <div className="card output" ref={consoleRef}>
         <div className="card-top">
-          <span><Terminal size={14} /> CONSOLE</span>
+          <span><Icon name="terminal" size={14} /> CONSOLE</span>
           <span className={`status s-${run.state === 'error' ? 'error' : run.state === 'running' ? 'busy' : run.state === 'done' ? 'ok' : 'idle'}`}>{status}</span>
-          <button className="icon-btn" onClick={() => setRun({ state: 'idle', output: '' })} aria-label="Clear console" disabled={run.state === 'idle' || running}><Trash2 size={16} /></button>
+          <button className="icon-btn" onClick={() => setRun({ state: 'idle', output: '' })} aria-label="Clear console" disabled={run.state === 'idle' || running}><Icon name="trash" size={16} /></button>
         </div>
         <pre className="out" aria-live="polite">
           {run.state === 'idle' && <span className="muted">Run your code to see its output here.</span>}
@@ -123,14 +123,14 @@ export function TerminalScreen({ fontSize }: { fontSize: number }) {
         {eof && <div className="note warn"><b>input() ran out of lines</b>Add one line per input() call in the Input panel above, then run again.</div>}
       </div>
 
-      {undo && <div className="toast" role="status"><span>{undo.label}</span><button onClick={() => { setCode(undo.code); setStdin(undo.stdin); setUndo(null); }}><Undo2 size={15} /> Undo</button></div>}
+      {undo && <div className="toast" role="status"><span>{undo.label}</span><button onClick={() => { setCode(undo.code); setStdin(undo.stdin); setUndo(null); }}><Icon name="undo" size={15} /> Undo</button></div>}
 
       <div className="dock">
         <div className="actions">
-          <button className="btn ghost" onClick={() => setSheet(true)}><BookOpen size={17} /> Examples</button>
+          <button className="btn ghost" onClick={() => setSheet(true)}><Icon name="book" size={17} /> Examples</button>
           {running
-            ? <button className="btn danger run" onClick={stop}><Square size={14} fill="currentColor" /> Stop</button>
-            : <button className="btn primary run" onClick={start}><Play size={15} fill="currentColor" /> Run code</button>}
+            ? <button className="btn danger run" onClick={stop}><Icon name="stop" size={14} solid /> Stop</button>
+            : <button className="btn primary run" onClick={start}><Icon name="play" size={15} solid /> Run code</button>}
         </div>
       </div>
 
@@ -141,7 +141,7 @@ export function TerminalScreen({ fontSize }: { fontSize: number }) {
           <div className="example-list">
             {EXAMPLES.map((e) => (
               <button key={e.id} className="example" onClick={() => useExample(e)}>
-                <span><b>{e.title}</b><small>{e.blurb}</small></span><ChevronRight size={18} />
+                <span><b>{e.title}</b><small>{e.blurb}</small></span><Icon name="chevron" size={18} />
               </button>
             ))}
           </div>

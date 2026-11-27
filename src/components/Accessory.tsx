@@ -1,7 +1,7 @@
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine, ChevronLeft, CornerDownLeft, CopyPlus, Hash, IndentDecrease, MoveDown, MoveUp, Redo2, Search, TextSelect, Trash2, Undo2, Wrench } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { EditorCommand, EditorHandle } from './CodeEditor';
 import { tap } from '../haptics';
+import { Icon } from './Icon';
 
 /** Keep the keyboard (and editor focus) alive when a toolbar button is pressed. */
 export const keepFocus = (e: { preventDefault: () => void }) => e.preventDefault();
@@ -71,7 +71,7 @@ function PadKey({ editor }: { editor: React.RefObject<EditorHandle | null> }) {
       }}
       onPointerUp={() => { start.current = null; }} onPointerCancel={() => { start.current = null; }}
       onContextMenu={(e) => e.preventDefault()}
-    ><span className="glyph">◂ ▸ ▴ ▾</span></button>
+    ><Icon name="pad" size={20} /></button>
   );
 }
 
@@ -89,39 +89,39 @@ export function Accessory({ editor, action }: { editor: React.RefObject<EditorHa
       <div className="keys" role="toolbar" aria-label={label} key={page}>
         {page === 'tools' && (
           <>
-            <Key label="New line below (Ctrl+Enter)" onFire={cmd('newline')} className="wide accent"><span className="glyph">Ctrl+</span><CornerDownLeft size={15} /></Key>
-            <Key label="Tab: indent four spaces" onFire={cmd('tab')} className="wide accent"><span className="glyph">⇥ TAB</span></Key>
+            <Key label="New line below (Ctrl+Enter)" onFire={cmd('newline')} className="wide accent"><span className="glyph">Ctrl</span><Icon name="enter" size={16} /></Key>
+            <Key label="Tab: indent four spaces" onFire={cmd('tab')} className="wide accent"><Icon name="tab" size={16} /><span className="glyph">TAB</span></Key>
             <PadKey editor={editor} />
-            <Key label="Undo (Ctrl+Z)" onFire={cmd('undo')}><Undo2 size={18} /></Key>
-            <Key label="Move cursor left" onFire={cmd('left')} repeat><ArrowLeft size={18} /></Key>
-            <Key label="Move cursor right" onFire={cmd('right')} repeat><ArrowRight size={18} /></Key>
-            <Key label="Jump one word left" onFire={cmd('wordLeft')} repeat><span className="glyph">◂ word</span></Key>
-            <Key label="Jump one word right" onFire={cmd('wordRight')} repeat><span className="glyph">word ▸</span></Key>
-            <Key label="Find and replace (Ctrl+F)" onFire={cmd('find')}><Search size={18} /></Key>
-            <Key label="Comment or uncomment line (Ctrl+/)" onFire={cmd('comment')}><Hash size={18} /></Key>
-            <Key label="Outdent (Shift+Tab)" onFire={cmd('outdent')}><IndentDecrease size={18} /></Key>
-            <Key label="Redo (Ctrl+Shift+Z)" onFire={cmd('redo')}><Redo2 size={18} /></Key>
-            <Key label="Duplicate line" onFire={cmd('duplicate')}><CopyPlus size={18} /></Key>
-            <Key label="Delete line (Ctrl+Shift+K)" onFire={cmd('deleteLine')}><Trash2 size={18} /></Key>
-            <Key label="Move line up (Alt+Up)" onFire={cmd('moveUp')} repeat><MoveUp size={18} /></Key>
-            <Key label="Move line down (Alt+Down)" onFire={cmd('moveDown')} repeat><MoveDown size={18} /></Key>
-            <Key label="Select line (Ctrl+L)" onFire={cmd('selectLine')}><TextSelect size={18} /></Key>
-            <Key label="Go to start of line (Home)" onFire={cmd('home')}><ArrowLeftToLine size={18} /></Key>
-            <Key label="Go to end of line (End)" onFire={cmd('end')}><ArrowRightToLine size={18} /></Key>
+            <Key label="Undo (Ctrl+Z)" onFire={cmd('undo')}><Icon name="undo" size={18} /></Key>
+            <Key label="Move cursor left" onFire={cmd('left')} repeat><Icon name="left" size={18} /></Key>
+            <Key label="Move cursor right" onFire={cmd('right')} repeat><Icon name="arrow" size={18} /></Key>
+            <Key label="Jump one word left" onFire={cmd('wordLeft')} repeat><Icon name="back" size={15} /><span className="glyph">word</span></Key>
+            <Key label="Jump one word right" onFire={cmd('wordRight')} repeat><span className="glyph">word</span><Icon name="chevron" size={15} /></Key>
+            <Key label="Find and replace (Ctrl+F)" onFire={cmd('find')}><Icon name="search" size={18} /></Key>
+            <Key label="Comment or uncomment line (Ctrl+/)" onFire={cmd('comment')}><Icon name="hash" size={18} /></Key>
+            <Key label="Outdent (Shift+Tab)" onFire={cmd('outdent')}><Icon name="outdent" size={18} /></Key>
+            <Key label="Redo (Ctrl+Shift+Z)" onFire={cmd('redo')}><Icon name="redo" size={18} /></Key>
+            <Key label="Duplicate line" onFire={cmd('duplicate')}><Icon name="duplicate" size={18} /></Key>
+            <Key label="Delete line (Ctrl+Shift+K)" onFire={cmd('deleteLine')}><Icon name="trash" size={18} /></Key>
+            <Key label="Move line up (Alt+Up)" onFire={cmd('moveUp')} repeat><Icon name="move-up" size={18} /></Key>
+            <Key label="Move line down (Alt+Down)" onFire={cmd('moveDown')} repeat><Icon name="move-down" size={18} /></Key>
+            <Key label="Select line (Ctrl+L)" onFire={cmd('selectLine')}><Icon name="select-line" size={18} /></Key>
+            <Key label="Go to start of line (Home)" onFire={cmd('home')}><Icon name="line-start" size={18} /></Key>
+            <Key label="Go to end of line (End)" onFire={cmd('end')}><Icon name="line-end" size={18} /></Key>
             <Key label="Show code symbols" onFire={() => setPage('symbols')} className="wide"><span className="glyph">( )</span></Key>
             <Key label="Show code snippets" onFire={() => setPage('snippets')} className="wide"><span className="glyph">{'{ }'} snip</span></Key>
           </>
         )}
         {page === 'symbols' && (
           <>
-            <Key label="Back to editor tools" onFire={() => setPage('tools')} className="wide accent"><ChevronLeft size={16} /><Wrench size={15} /></Key>
+            <Key label="Back to editor tools" onFire={() => setPage('tools')} className="wide accent"><Icon name="back" size={16} /><Icon name="wrench" size={15} /></Key>
             {SYMBOLS.map((k) => <Key key={k} label={`Insert ${k}`} onFire={() => editor.current?.insert(k)}>{k}</Key>)}
             <Key label="Show code snippets" onFire={() => setPage('snippets')} className="wide"><span className="glyph">{'{ }'} snip</span></Key>
           </>
         )}
         {page === 'snippets' && (
           <>
-            <Key label="Back to editor tools" onFire={() => setPage('tools')} className="wide accent"><ChevronLeft size={16} /><Wrench size={15} /></Key>
+            <Key label="Back to editor tools" onFire={() => setPage('tools')} className="wide accent"><Icon name="back" size={16} /><Icon name="wrench" size={15} /></Key>
             {SNIPPETS.map((s) => <Key key={s.label} label={`Insert ${s.label} template`} onFire={() => editor.current?.snippet(s.text)} className="wide snip"><span className="glyph">{s.label}</span></Key>)}
             <Key label="Show code symbols" onFire={() => setPage('symbols')} className="wide"><span className="glyph">( )</span></Key>
           </>

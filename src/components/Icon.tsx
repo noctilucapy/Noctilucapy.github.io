@@ -1,4 +1,4 @@
-const PATHS: Record<string, string> = {
+const PATHS = {
   home: 'M3 11.5 12 4l9 7.5M5.5 10v9.5h13V10',
   skills: 'M6 6h.01M18 6h.01M12 18h.01M6 6l6 12M18 6l-6 12M6 6h12',
   record: 'M4 19V9M10 19V5M16 19v-8M22 19H2',
@@ -25,11 +25,41 @@ const PATHS: Record<string, string> = {
   sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z',
   shield: 'M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z',
   target: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z',
-};
+  /* directional set: one 24px grid, 1.6 stroke, round caps. Arrows share one shaft length so they read as a family. */
+  left: 'M19 12H5M11 6l-6 6 6 6',
+  up: 'M12 19V5M6 11l6-6 6 6',
+  down: 'M12 5v14M6 13l6 6 6-6',
+  'chevron-down': 'm5 9 7 7 7-7',
+  'chevron-up': 'm5 15 7-7 7 7',
+  'line-start': 'M4 5v14M20 12H9M14 7l-5 5 5 5',
+  'line-end': 'M20 5v14M4 12h11M10 7l5 5-5 5',
+  tab: 'M3 12h12M10 7l5 5-5 5M20 5v14',
+  enter: 'M20 5v7a3 3 0 0 1-3 3H5M9 11l-4 4 4 4',
+  pad: 'm9 7 3-3 3 3M9 17l3 3 3-3M7 9l-3 3 3 3M17 9l3 3-3 3',
+  'move-up': 'M12 20V9M7 13l5-5 5 5M5 4h14',
+  'move-down': 'M12 4v11M7 11l5 5 5-5M5 20h14',
+  /* editing set */
+  undo: 'M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3',
+  redo: 'M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3',
+  search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4',
+  hash: 'M9 4 7 20M17 4l-2 16M4 9h16M3 15h16',
+  outdent: 'M4 6h16M12 12h8M4 18h16M8 9l-4 3 4 3',
+  duplicate: 'M8 8h11v12H8zM5 16V4h11M13.5 11v6M10.5 14h6',
+  'select-line': 'M3 8h18v8H3zM7 12h6',
+  wrench: 'M15 5a4 4 0 0 0 4.5 5.3L10 20a2.1 2.1 0 0 1-3-3l9.5-9.5A4 4 0 0 0 15 5z',
+  code: 'm8 8-5 4 5 4M16 8l5 4-5 4M14 5l-4 14',
+  expand: 'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5',
+  share: 'M12 15V3M8 7l4-4 4 4M6 11H5v10h14V11h-1',
+  'square-plus': 'M4 4h16v16H4zM12 8v8M8 12h8',
+} satisfies Record<string, string>;
 
-export function Icon({ name, size = 20, stroke = 1.6 }: { name: keyof typeof PATHS | string; size?: number; stroke?: number }) {
+export type IconName = keyof typeof PATHS;
+
+/** The one icon set. Every glyph in the app (arrows, chevrons, keys, status marks) is drawn here so stroke, caps and sizing stay on-brand.
+ *  `solid` fills the shape (play and stop transport marks); `className` lets a parent rotate or tint it. */
+export function Icon({ name, size = 20, stroke = 1.6, solid, className, label }: { name: IconName; size?: number; stroke?: number; solid?: boolean; className?: string; label?: string }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" style={{ flex: 'none' }}>
+    <svg className={className} width={size} height={size} viewBox="0 0 24 24" fill={solid ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth={stroke} strokeLinecap="round" strokeLinejoin="round" aria-hidden={label ? undefined : 'true'} aria-label={label} role={label ? 'img' : undefined} focusable="false" style={{ flex: 'none' }}>
       <path d={PATHS[name] ?? PATHS.sparkle} />
     </svg>
   );
